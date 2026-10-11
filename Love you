@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Selamat Ulang Tahun Sayang</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Poppins:wght@300&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#fff5f5; min-height:100vh; display:flex;
+  justify-content:center; padding:18px;
+  font-family:'Poppins',sans-serif;
+}
+.kartu{
+  width:100%; max-width:380px; background:white;
+  border-radius:16px; margin-bottom:20px;
+  padding:22px 20px; position:relative; overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+  text-align:center;
+}
+.kartu img{width:100%; border-radius:14px; display:block; margin-bottom:14px}
+
+.wm{
+  position:absolute;
+  bottom:5px; left:0; right:0;
+  height:190px;
+  background:url('https://i.postimg.cc/qh1WZxj0/IMG-537e7f20-9fab-453f-af08-d12e5cce31f2.jpg') no-repeat bottom center;
+  background-size:180px;
+  opacity:0; transition:1s; pointer-events:none;
+}
+.wm.show{ opacity:.20 }
+
+.isi{ position:relative; z-index:1 }
+
+h1{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; color:#a67c52;
+  font-size:30px; font-weight:400; margin:0;
+}
+h2{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; color:#8c6b4a;
+  font-size:18px; font-weight:400; margin:6px 0 14px;
+}
+#surat{
+  font-size:13.8px; line-height:2.05; color:#5c4e4a;
+  white-space:pre-line; min-height:120px; opacity:0; transition:1s;
+  text-align:left;
+}
+#surat.show{ opacity:1 }
+
+button{
+  margin-top:18px; background:linear-gradient(135deg,#f4a6a6,#e89090);
+  color:white; border:0; padding:13px 32px; border-radius:30px;
+  cursor:pointer; box-shadow:0 8px 20px rgba(244,166,166,.5); transition:.3s;
+  font-size:13px; letter-spacing:1px;
+}
+button.hide{ opacity:0; pointer-events:none; transform:translateY(10px); }
+
+#kaki{ margin-top:18px; font-size:11px; color:#c9a88a; letter-spacing:1px; }
+
+/* salju gold */
+.snow{
+  position:fixed; top:-10px; color:#d4af37;
+  pointer-events:none; opacity:.6;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  0%{transform:translateY(-10px) translateX(0) rotate(0deg);opacity:0}
+  10%{opacity:.8}
+  100%{transform:translateY(105vh) translateX(25px) rotate(360deg);opacity:0}
+}
+#musicBtn{
+  position:fixed; bottom:20px; right:20px; width:38px; height:38px;
+  border-radius:50%; background:white; box-shadow:0 4px 12px rgba(0,0,0,.15);
+  display:flex; align-items:center; justify-content:center; z-index:99;
+}
+</style>
+</head>
+<body>
+
+<div class="kartu">
+  <img src="https://i.postimg.cc/3J7H7Q2B/IMG-20241005-WA0000.jpg" alt="birthday">
+  <img src="https://i.postimg.cc/qh1WZxj0/IMG-537e7f20-9fab-453f-af08-d12e5cce31f2.jpg" style="display:none">
+  
+  <div class="wm" id="wm"></div>
+  <div class="isi">
+    <h1>Selamat Ulang Tahun</h1>
+    <h2>Sayang</h2>
+    <div id="surat"></div>
+    <button id="btn" onclick="buka()">Buka Suratnya ♡</button>
+    <div id="kaki">11 Oktober 2026 • Dengan cinta ✨</div>
+  </div>
+</div>
+
+<audio id="lagu" loop src="https://files.catbox.moe/ocdjdl.mp3"></audio>
+<div id="musicBtn" onclick="toggleMusic()">♫</div>
+
+<script>
+const teks = `Selamat ulang tahun, semoga semesta lebih ramah kepadamu.
+
+Semoga langkahmu selalu menemukan arah, bahkan di tengah gelapnya jalan.
+
+Semoga hal-hal sederhana tetap mampu membuat hatimu bahagia.
+
+Dan segala lelah yang tak sempat kau ceritakan, perlahan menemukan jedanya.
+
+Jangan takut pada waktu, sebab tumbuh tak selalu berarti harus berlari.
+
+Semoga hari-hari mendatang memberimu lebih banyak alasan untuk tersenyum.
+
+Dan semoga dunia selalu menyisakan tempat yang hangat untukmu pulang.`;
+
+let i = 0;
+function buka(){
+  document.getElementById('btn').classList.add('hide');
+  document.getElementById('wm').classList.add('show');
+  const el = document.getElementById('surat');
+  el.classList.add('show');
+  document.getElementById('lagu').play().catch(()=>{});
+  
+  // typewriter
+  function ketik(){
+    if(i < teks.length){
+      el.innerHTML += teks.charAt(i);
+      i++;
+      setTimeout(ketik, 28);
+    }
+  }
+  ketik();
+
+  // salju gold
+  setInterval(()=>{
+    const s = document.createElement('div');
+    s.className = 'snow';
+    s.innerHTML = '✦';
+    s.style.left = Math.random()*100 + 'vw';
+    s.style.animationDuration = (4+Math.random()*6)+'s';
+    s.style.fontSize = (8+Math.random()*12)+'px';
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(), 8000);
+  }, 200);
+}
+
+function toggleMusic(){
+  const a = document.getElementById('lagu');
+  if(a.paused) a.play(); else a.pause();
+}
+</script>
+</body>
+</html>
